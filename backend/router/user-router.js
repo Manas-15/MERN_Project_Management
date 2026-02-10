@@ -4,6 +4,9 @@ const userControllers = require("../controllers/user-controller");
 
 router.get("/", userControllers.home);
 
+router.post("/signup", userControllers.createUser);
+router.post("/login", userControllers.loginUser);
+
 // @desc    Create a new user
 router.post("/users", userControllers.createUser);
 

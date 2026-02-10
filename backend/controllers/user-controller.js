@@ -20,11 +20,57 @@ const createUser = async (req, res) => {
       password,
     });
 
-    res.status(200).json({ data });
+    const token = data.generateToken();
+
+    res.status(200).json({
+      msg: "User created successfully",
+      token,
+      user: {
+        id: data._id,
+        username: data.username,
+        email: data.email,
+        phone: data.phone,
+      },
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+      const isMatchPassword = await userExist.matchPassword(password);
+
+      if (!isMatchPassword) {
+        return res.status(402).json({ msg: "Invalid credentials" });
+      }
+
+      const token = userExist.generateToken();
+
+      return res.status(200).json({
+        msg: "User login successfully",
+        token,
+        user: {
+          id: userExist._id,
+          username: userExist.username,
+          email: userExist.email,
+          phone: userExist.phone,
+          isAdmin: userExist.iAdmin,
+        },
+      });
+    }
+    return res.status(402).json({ msg: "User does not exist" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 const getUser = async (req, res) => {
   try {
@@ -57,4 +103,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { home, createUser, getUser, updateUser, deleteUser };
+module.exports = { home, createUser, loginUser, getUser, updateUser, deleteUser };
