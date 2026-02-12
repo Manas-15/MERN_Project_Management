@@ -2,9 +2,12 @@
   "name": "node-express-mongodb",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "ts-node server.ts",
+    "dev": "nodemon --exec ts-node server.ts",
+    "build": "tsc",
+    "serve": "node dist/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,13 +15,23 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.16.0",
-    "mongoose": "^8.15.0"
+    "mongoose": "^8.15.0",
+    "nodemailer": "^8.0.1",
+    "otp-generator": "^4.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.2.3",
+    "@types/nodemailer": "^7.0.9",
+    "@types/otp-generator": "^4.0.2",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

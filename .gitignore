@@ -1,0 +1,40 @@
+#backend
+backend/.env
+backend/node_modules/
+backend/package-lock.json
+
+
+
+#frontend
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+frontend/package-lock.json
+
+# testing
+
+# next.js
+frontend/.next/
+frontend/out/
+# production
+frontend/build/
+
+
+
+# debug
+npm-debug.log*
+
+# local env files
+.env*.local
+/tsconfig.json
+
+# vercel
+frontend/.vercel
+
+# typescript
+frontend/next-env.d.ts
+
+# ignoring package json and package lock json file as it was not present earlier in gitignore.
+frontend/package-lock.json
+
+frontend/.vscode/

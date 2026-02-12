@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
+      // required: true,
     },
     email: {
       type: String,
@@ -14,7 +15,7 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
+      // required: true,
     },
     password: {
       type: String,
@@ -32,7 +33,6 @@ const userSchema = new mongoose.Schema(
 
 //secure password with dcrypt
 userSchema.pre("save", async function (next) {
-  console.log("pre method", this);
   const user = this;
 
   if (!user.isModified("password")) {
@@ -47,5 +47,35 @@ userSchema.pre("save", async function (next) {
     next(error);
   }
 });
+
+// Compare password method
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// Generate JWT token
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign(
+    {
+      userId: this._id.toString(),
+      email: this.email,
+      isAdmin: this.iAdmin,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "5m" },
+  );
+};
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign(
+    {
+      userId: this._id.toString(),
+      email: this.email,
+      isAdmin: this.iAdmin,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "5m" },
+  );
+};
+
 
 module.exports = mongoose.model("User", userSchema);

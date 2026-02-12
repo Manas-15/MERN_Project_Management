@@ -3,10 +3,7 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const home = (req, res) => {
-  res.status(200).send("This is user controller Home page");
-};
-const signup = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { username, email, phone, password } = req.body;
 
@@ -23,7 +20,16 @@ const signup = async (req, res) => {
       password,
     });
 
-    res.status(200).json({ data });
+
+    res.status(200).json({
+      msg: "User created successfully",
+      user: {
+        id: data._id,
+        username: data.username,
+        email: data.email,
+        phone: data.phone,
+      },
+    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -93,11 +99,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  home,
-  signup,
-  login,
-  getUser,
-  updateUser,
-  deleteUser,
-};
+module.exports = { createUser, getUser, updateUser, deleteUser };
