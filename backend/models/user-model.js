@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema(
 
 //secure password with dcrypt
 userSchema.pre("save", async function (next) {
-  console.log("pre method", this);
   const user = this;
 
   if (!user.isModified("password")) {
@@ -55,7 +54,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Generate JWT token
-userSchema.methods.generateToken = function () {
+userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       userId: this._id.toString(),
@@ -63,8 +62,20 @@ userSchema.methods.generateToken = function () {
       isAdmin: this.iAdmin,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "5m" }
+    { expiresIn: "5m" },
   );
 };
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign(
+    {
+      userId: this._id.toString(),
+      email: this.email,
+      isAdmin: this.iAdmin,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "5m" },
+  );
+};
+
 
 module.exports = mongoose.model("User", userSchema);

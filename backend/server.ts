@@ -6,8 +6,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Routes
+// All Routes
+app.use("/api/v1", require("./router/auth-router"));
 app.use("/api/v1", require("./router/user-router"));
+app.use("/api/v1", require("./router/otp-router"));
 app.use("/api/v1", require("./router/project-router"));
 app.use("/api/v1", require("./router/task-router"));
 
