@@ -17,8 +17,9 @@ const createTask = async (req, res) => {
       end_date,
     });
 
-    res.status(200).json({ data });
+    res.status(200).json({ data, msg: "Task created successfully" });
   } catch (err) {
+    console.error(err);
     res.status(400).json({ error: err.message });
   }
 };
